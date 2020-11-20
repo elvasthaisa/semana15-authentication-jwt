@@ -15,7 +15,7 @@ const getAll = (req, res) => {
 
   const token = authHeader.split(' ')[1];
 
-  jwt.verify(token, 'SECRET', function(err) {
+  jwt.verify(token, SECRET, function(err) {
     if(err) {
       return res.status(403).send('Nope');
     }
