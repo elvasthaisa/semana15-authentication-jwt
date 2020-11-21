@@ -10,14 +10,14 @@ const getAll = (req, res) => {
   // console.log(`Meu header: ${authHeader}`)
 
   if (!authHeader) {
-    return res.status(401).send('Kd os header parça');
+    return res.status(401).send('Não foi encontrado nenhum Header');
   }
 
   const token = authHeader.split(' ')[1];
 
   jwt.verify(token, SECRET, function(err) {
     if(err) {
-      return res.status(403).send('Nope');
+      return res.status(403).send('Acesso negado: O token não é válido');
     }
 
     tarefas.find(function(err, tarefas){

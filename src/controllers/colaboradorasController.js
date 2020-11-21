@@ -1,4 +1,4 @@
-const { JsonWebTokenError } = require('jsonwebtoken');
+// const { JsonWebTokenError } = require('jsonwebtoken');
 const colaboradoras = require('../models/colaboradoras');
 const SECRET = process.env.SECRET;
 const jwt = require('jsonwebtoken');
@@ -7,9 +7,9 @@ const bcrypt = require('bcrypt');
 const getAll = (req, res) => {
   const authHeader = req.get('authorization');
 
-if (!authHeader) {
-  return res.status(401).send("Falta os headers, kiridx!")
-}
+  if (!authHeader) {
+    return res.status(401).send("Não foi encontrado nenhum Header")
+  }
 
   const token = authHeader.split(' ')[1];
 
@@ -36,26 +36,29 @@ const postColaboradora = (req, res) => {
     if(err) { 
       return res.status(500).send({ message: err.message })
     }
-    return res.status(201).send(colaboradora.toJSON())
-  }) 
-};
+    return res.status(201).send(colaboradora)
+  });
+}
 
 const login = (req, res) => {
     colaboradoras.findOne({ email: req.body.email }, function(err, colaboradora) {
-        if (!colaboradora) {
-            return res.status(404).send(`Não existe colaborada com o email ${req.body.email}`)
-        }
+      if (!colaboradora) {
+        return res.status(404).send(`Não existe colaborada com o email ${req.body.email}`)
+      } 
 
-        const senhaValida = bcrypt.compareSync(req.body.senha, colaboradora.senha);
-        
-        const token = jwt.sign({ email: req.body.email }, SECRET);
+      const senhaValida = bcrypt.compareSync(req.body.senha, colaboradora.senha);
+      
+      if (!senhaValida) {
+        return res.status(401).send('A senha está incorreta!')
+      }
 
-        return res.status(200).send(token);
+      const token = jwt.sign({ email: req.body.email }, SECRET);
+      return res.status(200).send(token);
     });
-}
+};
 
 module.exports = {
   getAll,
   postColaboradora,
   login
-};
+}

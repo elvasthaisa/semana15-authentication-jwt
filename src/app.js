@@ -1,7 +1,6 @@
 require('dotenv-safe').config();
 
 const express = require("express")
-// const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 
 const app = express()
@@ -26,8 +25,6 @@ const index = require("./routes/index")
 const tarefas = require("./routes/tarefasRoute")
 const colaboradoras = require("./routes/colaboradorasRoute")
 
-//configurar body parser
-// app.use(bodyParser.json());
 app.use(express.json());
 
 app.use(function (req, res, next) {
