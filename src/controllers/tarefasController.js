@@ -59,8 +59,6 @@ const postTarefa = (req, res) => {
 const deleteTarefa = (req, res) => {
   const id = req.params.id;
 
-  //deleteMany remove mais de um registro
-  //deleteOne remove apenas um registro
   tarefas.find({ id }, function(err, tarefa){
     if(tarefa.length > 0){
       tarefas.deleteMany({ id }, function(err){
