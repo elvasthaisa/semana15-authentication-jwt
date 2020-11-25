@@ -1,4 +1,3 @@
-// const { JsonWebTokenError } = require('jsonwebtoken');
 const colaboradoras = require('../models/colaboradoras');
 const SECRET = process.env.SECRET;
 const jwt = require('jsonwebtoken');
@@ -55,10 +54,37 @@ const login = (req, res) => {
       const token = jwt.sign({ email: req.body.email }, SECRET);
       return res.status(200).send(token);
     });
-};
+}
+
+const deleteColaboradora = (req, res) => {
+  const id = req.params.id;
+
+  colaboradoras.find({ id }, function(err, colaboradora) {
+    if(colaboradora.length > 0) {
+      colaboradoras.deleteMany({ id }, (err) => {
+        if(err) {
+          return res.status(424).send({
+            message: err.message,
+            status: "FAIL"
+          })
+        }
+        return res.status(200).send({
+          message: 'Colaboradora removida com sucesso!',
+          status: "SUCCESS"
+        })
+      })
+    } else {
+      return res.status(200).send({
+        message: "Não há colaborada a ser removida",
+        status: "EMPTY"
+      })
+    }
+  })
+}
 
 module.exports = {
   getAll,
   postColaboradora,
-  login
+  login,
+  deleteColaboradora
 }

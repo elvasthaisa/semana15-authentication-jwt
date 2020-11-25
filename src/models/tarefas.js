@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-//estrutura do seu model (atributos da sua entidade)
 const tarefasSchema = new mongoose.Schema({
     id : { type : Number},
     descricao: { type: String },
@@ -16,5 +15,4 @@ const tarefasSchema = new mongoose.Schema({
 // estou definindo o nome da collection que irei salvar no banco
 const tarefas = mongoose.model('tarefas', tarefasSchema);
 
-// exportar o model para ser utilizado
 module.exports = tarefas;
